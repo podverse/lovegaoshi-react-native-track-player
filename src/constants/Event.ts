@@ -115,4 +115,9 @@ export enum Event {
    * See https://react-native-track-player.js.org/docs/api/events#remoteskip
    **/
   RemoteSkip = 'remote-skip',
+  /**
+   * (Android only) Fired when the user enters a browsable children in android auto.
+   * See https://rntp.dev/docs/api/events#remoteBrowse
+   **/
+  RemoteBrowse = 'remote-browse',
 }
