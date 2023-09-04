@@ -54,7 +54,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.lovegaoshi:KotlinAudio:v2.0.0-rc7-podverse-3'
+    implementation 'com.github.lovegaoshi:KotlinAudio:v2.0.0-rc7-podverse-4'
     // used when building against local maven
 //    implementation "com.github.doublesymmetry:kotlin-audio:1.2.2"
 
