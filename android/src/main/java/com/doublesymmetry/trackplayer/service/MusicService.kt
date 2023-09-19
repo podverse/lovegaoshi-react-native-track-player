@@ -289,9 +289,19 @@ class MusicService : HeadlessJsMediaService() {
                 else -> { null }
             }
         }.toMutableList()
+
+        fun customIcon(customAction: String): Int {
+            return when (customAction) {
+                "customSkipPrev" -> com.google.android.exoplayer2.ui.R.drawable.exo_controls_previous
+                "customSkipNext" -> com.google.android.exoplayer2.ui.R.drawable.exo_controls_next
+                "customJumpForward" -> TrackPlayerR.drawable.forward
+                "customJumpBackward" -> TrackPlayerR.drawable.rewind
+                else -> com.google.android.exoplayer2.ui.R.drawable.exo_ic_play_circle_filled
+            }
+        }
         if (customActionsList != null) {
             for (customAction in customActionsList ?: emptyList()) {
-                val customIcon = BundleUtils.getIcon(this, customActions, customAction, TrackPlayerR.drawable.exo_media_action_repeat_all)
+                val customIcon = BundleUtils.getIcon(this, customActions, customAction, customIcon(customAction))
                 buttonsList.add(CUSTOM_ACTION(icon=customIcon, customAction = customAction))
             }
         }
