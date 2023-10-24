@@ -96,19 +96,7 @@ public abstract class HeadlessJsMediaService extends MediaBrowserServiceCompat i
 
     @Override
     public void onCreate() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (Settings.canDrawOverlays(this)) {
-                Intent openAppIntent = getPackageManager().getLaunchIntentForPackage(getPackageName());
-                openAppIntent.setData(Uri.parse("trackplayer://service-created"));
-                openAppIntent.setAction(Intent.ACTION_VIEW);
-                openAppIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(openAppIntent);
-            } else {
-                Timber.tag("RNTP").d("to wake RN Activity, enable draw over apps permission.");
-            }
-        }
         super.onCreate();
-
     }
     /**
      * Start a task. This method handles starting a new React instance if required.
