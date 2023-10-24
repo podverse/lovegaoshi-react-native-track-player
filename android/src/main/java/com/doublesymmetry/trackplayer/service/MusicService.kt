@@ -9,6 +9,7 @@ import android.os.Binder
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.provider.Settings
 import android.support.v4.media.RatingCompat
 import android.support.v4.media.MediaBrowserCompat.MediaItem
 import android.util.Log
@@ -72,17 +73,20 @@ class MusicService : HeadlessJsMediaService() {
     ): BrowserRoot {
         // TODO: verify clientPackageName here.
         Log.d("RNTP-AA", clientPackageName + " attempted to get Browsable root.")
+
         if (clientPackageName in arrayOf<String>(
                         "com.android.systemui",
                         "com.example.android.mediacontroller",
                         "com.google.android.projection.gearhead"
                 )) {
             Log.d("RNTP-AA", clientPackageName + " is in the white list of waking activity.")
-            val activityIntent = packageManager.getLaunchIntentForPackage(packageName)
-            activityIntent!!.data = Uri.parse("trackplayer://service-bound")
-            activityIntent.action = Intent.ACTION_VIEW
-            activityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(activityIntent)
+            if (Settings.canDrawOverlays(this)) {
+                val activityIntent = packageManager.getLaunchIntentForPackage(packageName)
+                activityIntent!!.data = Uri.parse("trackplayer://service-bound")
+                activityIntent.action = Intent.ACTION_VIEW
+                activityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(activityIntent)
+            }
         }
         val extras = Bundle()
         extras.putInt(
