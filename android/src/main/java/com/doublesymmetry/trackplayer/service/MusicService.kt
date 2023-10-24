@@ -80,7 +80,13 @@ class MusicService : HeadlessJsMediaService() {
                         "com.google.android.projection.gearhead"
                 )) {
             Log.d("RNTP-AA", clientPackageName + " is in the white list of waking activity.")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
+            val reactActivity = reactNativeHost.reactInstanceManager.currentReactContext?.currentActivity
+            if (
+                // HACK: validate reactActivity is present; if not, send wake intent
+                (reactActivity == null || reactActivity.isDestroyed)
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && Settings.canDrawOverlays(this)
+            ) {
                 val activityIntent = packageManager.getLaunchIntentForPackage(packageName)
                 activityIntent!!.data = Uri.parse("trackplayer://service-bound")
                 activityIntent.action = Intent.ACTION_VIEW
