@@ -19,11 +19,9 @@ def getExtOrIntegerDefault(name) {
 
 android {
     compileSdkVersion getExtOrIntegerDefault('compileSdkVersion')
+    namespace 'com.doublesymmetry.trackplayer'
 
     def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
-    if (agpVersion.tokenize('.')[0].toInteger() >= 7) {
-      namespace "com.doublesymmetry.trackplayer"
-    }
     defaultConfig {
         minSdkVersion getExtOrIntegerDefault('minSdkVersion') // RN's minimum version
         targetSdkVersion getExtOrIntegerDefault('targetSdkVersion')
@@ -53,9 +51,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.lovegaoshi:KotlinAudio:v2.0.0-aa22'
+    implementation 'com.github.lovegaoshi:KotlinAudio:v2.0.0-aa23'
     // used when building against local maven
-//    implementation "com.github.doublesymmetry:kotlin-audio:2.0.0"
+//    implementation "com.github.doublesymmetry:kotlin-audio:2.1.0"
 
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"

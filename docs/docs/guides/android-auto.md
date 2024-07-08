@@ -1,5 +1,5 @@
 ---
-sidebar_position: 98
+sidebar_position: 97
 ---
 
 # Android Auto Support
@@ -8,9 +8,9 @@ Make sure to read through [Google's guidelines](https://developer.android.com/tr
 
 See the example app and [Podverse's PR](https://github.com/podverse/podverse-rn/pull/1928) as examples adding Android Auto support to an existing RNTP app.
 
-## Using RN < 0.71?
+## RN Version Compatibility
 
-You may need to manually edit HeadlessJsMediaService.java to make it compatible with your current RN version. See [Podverse's RNTP fork](https://github.com/lovegaoshi/react-native-track-player/tree/dev-podverse-aa) that uses RN 0.66.
+HeadlessJsTaskService.java does change across RN versions, for example from RN 0.71. RNTP's HeadlessJsTaskService will use whatever compatible with the most recent RN version. You may need to manually edit HeadlessJsMediaService.java to make it compatible with your current RN version. See [Podverse's RNTP fork](https://github.com/lovegaoshi/react-native-track-player/tree/dev-podverse-aa) that uses RN 0.66.
 
 ## Necessary Declarations
 
@@ -91,6 +91,16 @@ This allows the RN Activity to overlay on top of the lock screen and start itsel
     }
 ```
 
+## Album Art
+
+I originally enabled album art via https://github.com/lovegaoshi/KotlinAudio/commit/7a3d90b5b7b548e45b8b54ffcf62eac5c795bc14 but [google's guidelines](https://developer.android.com/training/cars/media/#display-artwork) seem to contradict with that. nevertheless however RNTP is currently set up (for ex https://github.com/lovegaoshi/react-native-track-player/blob/6f634594f24aa1974b2c8cdc6848b8b349cccdf0/android/src/main/java/com/doublesymmetry/kotlinaudio/notification/NotificationManager.kt#L389) for remote urls it works great, but for local uris (file:///) and embedded covers within local media files it wont work.
+
+for local uris while I do not have a use and no rigorous tests yet, I believe converting the file:/// uri to a content:// one, as specified in the google guidelines, would work. u can see how i did this via a fileProvider: https://github.com/lovegaoshi/azusa-player-mobile/pull/449
+
+for embedded covers this has to be first resolved and written to a file, then load the content:// uri as in the google guidelines. I tried with both ffmpeg and MediaMetadataRetriever, opted for the latter in the end for simplicity. commit is here: https://github.com/lovegaoshi/react-native-track-player/commit/6f634594f24aa1974b2c8cdc6848b8b349cccdf0
+
+the specific implementation I have does have a drawback taht the local file is written in the /Pictures folder. you might be able to write to cache using File() then convert to content:// with a fileProvider, but I chose the simplicity of MediaStore and can deal with this drawback.
+
 ## Known Issues
 
 JumpForward and JumpBackward may not show on Android <13 devices. To resolve this, implement these buttons as CustomActions, just like how they are handled under Android >=13. You need to implement changes in KotlinAudio. Note this will introduce [duplicate custom actions buttons](https://github.com/doublesymmetry/react-native-track-player/issues/1970) so more patches are needed. See Podverse's KotlinAudio fork.
@@ -99,7 +109,7 @@ If [Event.RemoteBrowse is not firing for the first two tabs](https://github.com/
 
 ## App Showcase
 
-[APM](https://play.google.com/store/apps/details?id=com.noxplay.noxplayer) and [Podverse](https://play.google.com/store/apps/details?id=com.podverse use a customized fork and are both on the google play store in production with auto support.
+[APM](https://play.google.com/store/apps/details?id=com.noxplay.noxplayer) and [Podverse](https://play.google.com/store/apps/details?id=com.podverse) use a customized fork and are both on the google play store in production with auto support.
 
 Getting pass Play Store's review process for an auto suppported app is tough. Here are a few issues we encountered:
 
@@ -122,3 +132,9 @@ something about media not responsive to voice commands
 This was due to Podverse did not handle voice commands. Although play store refused to approve repeatly after fix until an appeal was submitted, then it was approved.
 
 https://github.com/podverse/podverse-rn/pull/1969
+
+```
+your app does not respond after issuing a voice command.
+```
+
+This is a recent rejection I experienced since this year and it could be JS bugs I accidentally introduced or now a native handler to MEDIA_PLAY_FROM_SEARCH is expected; but for the PR that fixed this as a reference, see https://github.com/lovegaoshi/azusa-player-mobile/pull/407
