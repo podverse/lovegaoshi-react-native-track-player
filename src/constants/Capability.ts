@@ -1,4 +1,5 @@
-import TrackPlayer from '../TrackPlayerModule';
+import { NativeModules } from 'react-native';
+const { TrackPlayerModule: TrackPlayer } = NativeModules;
 
 export enum Capability {
   Play = TrackPlayer.CAPABILITY_PLAY,

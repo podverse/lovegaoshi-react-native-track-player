@@ -1,5 +1,6 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { StyleSheet } from 'react-native';
 import { Spacer } from './Spacer';
 import { Button } from './Button';
 import TrackPlayer from 'react-native-track-player';
@@ -30,7 +31,7 @@ const onReset = async () => {
 
 export const ActionSheet: React.FC = () => {
   return (
-    <ScrollView>
+    <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
       <Spacer />
       <Button
         title={'Update Notification Metadata Randomly'}
@@ -43,6 +44,19 @@ export const ActionSheet: React.FC = () => {
         type={'primary'}
       />
       <Button title={'Reset'} onPress={onReset} type={'primary'} />
-    </ScrollView>
+    </BottomSheetScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  contentContainer: {
+    flex: 1,
+    marginTop: '4%',
+    marginHorizontal: 16,
+  },
+  optionRowLabel: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: '600',
+  },
+});

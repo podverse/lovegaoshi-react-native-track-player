@@ -44,7 +44,7 @@ released you can install the `nightly` version which is an automatic release of
 
 ## iOS Setup
 
-iOS requires a few extra steps that are _not_ required for Android/Web.
+iOS requires a few extra steps that are _not_ required for Android/Windows.
 
 ### Enable Swift Modules
 
@@ -60,45 +60,15 @@ You'll need to run a `pod install` in order to install the native iOS dependenci
 cd ios && pod install
 ```
 
-## Web Setup
-
-RNTP is available on web. The web implementation leverages [shaka-player](https://github.com/shaka-project/shaka-player)
-which is an optional peer dependency of the RNTP. If you want to deploy the web
-platform you'll need to install `shaka-player` directly in your project:
-
-<Tabs groupId="pkg">
-  <TabItem value="npm" label="NPM" default>
-
-    npm install --save shaka-player
-
-  </TabItem>
-  <TabItem value="yarn" label="Yarn">
-
-    yarn add shaka-player
-
-  </TabItem>
-</Tabs>
-
-You may need to [enable transmuxing support](../troubleshooting.md#web-issues-with-hls-streams)
-if you're using HLS streams with MPEG2-TS content.
-
-<Tabs groupId="pkg">
-  <TabItem value="npm" label="NPM" default>
-
-    npm install --save mux.js
-
-  </TabItem>
-  <TabItem value="yarn" label="Yarn">
-
-    yarn add mux.js
-
-  </TabItem>
-</Tabs>
-
 ## Expo
 
 You can now use React Native Track Player with Expo. 
 
 Please be aware that while many people are using React Native Track Player with Expo successfully, the current maintainers of this project do not use Expo and their ability to resolve issues involving Expo is limited.
 
-For more information, see [Developing with Expo](../guides/with-expo.md).
+To get started, create a [custom development client](https://docs.expo.dev/clients/getting-started/) for your Expo app and then install React Native Track Player.
+
+Here is the configuration required for audio playback in background:
+
+- [iOS: Enable audio playback in background via your app.json](https://docs.expo.dev/versions/latest/sdk/audio/#playing-or-recording-audio-in-background)
+- [Android: Stop playback when the app is closed](./background-mode.md/#android)
